@@ -8,7 +8,7 @@ const { Meta } = Card;
 const ContactsListItem = ({ avatar, id, name, phone }) => (
   <Card
     className="contact"
-    style={{ width: 300, marginTop: 16 }}
+    style={{ marginTop: 16 }}
     actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
   >
     <Meta
