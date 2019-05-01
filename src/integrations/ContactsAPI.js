@@ -1,10 +1,13 @@
+import { CONTACTS_API_ENDPOINT } from '../defaults/Endpoints';
+
 class ContactsAPI {
 
   static fetchContacts() {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve([1,2,3]);
-      }, 2000);
+      fetch(CONTACTS_API_ENDPOINT)
+      .then(response => response.json())
+      .then(resolve)
+      .catch(reject);
     });
   }
 

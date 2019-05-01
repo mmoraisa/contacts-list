@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { callFetchContacts } from '../ducks/Contacts';
+import ContactsList from './ContactsList';
 
 const Main = ({ contacts, fetchContacts }) => {
 
@@ -9,9 +10,9 @@ const Main = ({ contacts, fetchContacts }) => {
   }, [fetchContacts]);
 
   return (
-    <div>
-      {JSON.stringify(contacts)}
-    </div>
+    <ContactsList
+      contacts={contacts.data}
+      loading={contacts.loading.fetch} />
   );
 };
 
