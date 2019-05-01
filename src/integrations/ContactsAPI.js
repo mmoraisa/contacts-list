@@ -11,6 +11,16 @@ class ContactsAPI {
     });
   }
 
+  static deleteContact(contactId) {
+    return new Promise((resolve, reject) => {
+      fetch(`${CONTACTS_API_ENDPOINT}/${contactId}`, {
+        method: 'delete'
+      })
+      .then(resolve)
+      .catch(reject);
+    });
+  }
+
 }
 
 export default ContactsAPI;

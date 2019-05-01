@@ -34,8 +34,7 @@ const Main = ({ contacts, fetchContacts }) => {
           setQuery(query);
         }} />
       <ContactsList
-        contacts={viewingContacts}
-        loading={contacts.loading.fetch} />
+        contacts={viewingContacts} />
     </div>
   );
 };
