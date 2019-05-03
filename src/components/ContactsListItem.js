@@ -5,15 +5,17 @@ import './ContactsListItem.css';
 
 const { Meta } = Card;
 
-const ContactsListItem = ({ avatar, deleteContact, id, loading, name, phone }) => (
+const ContactsListItem = ({ avatar, deleteContact, editContact, id, loading, name, phone }) => (
   <Card
     className="contact"
     style={{ marginTop: 16 }}
     actions={[
-      <Spin spinning={loading.delete} size="small">
-        <Icon onClick={deleteContact} type="delete"/>
+      <Spin onClick={deleteContact} size="small" spinning={loading.delete}>
+        <Icon type="delete"/>
       </Spin>,
-      <Icon type="edit" />,
+      <Spin onClick={editContact} size="small" spinning={false}>
+        <Icon type="edit" />
+      </Spin>,
       <Icon type="ellipsis" />]}
   >
     <Meta
@@ -27,6 +29,7 @@ const ContactsListItem = ({ avatar, deleteContact, id, loading, name, phone }) =
 ContactsListItem.propTypes = {
   avatar: PropTypes.string.isRequired,
   deleteContact: PropTypes.func.isRequired,
+  editContact: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   loading: PropTypes.shape({
     delete: PropTypes.bool.isRequired

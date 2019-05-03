@@ -5,6 +5,9 @@ export const FETCH_CONTACTS_SUCCESS = 'FETCH_CONTACTS_SUCCESS';
 export const CALL_DELETE_CONTACT = 'CALL_DELETE_CONTACT';
 export const DELETE_CONTACT_FAILED = 'DELETE_CONTACT_FAILED';
 export const DELETE_CONTACT_SUCCESS = 'DELETE_CONTACT_SUCCESS';
+export const CALL_EDIT_CONTACT = 'CALL_EDIT_CONTACT';
+export const EDIT_CONTACT_FAILED = 'EDIT_CONTACT_FAILED';
+export const EDIT_CONTACT_SUCCESS = 'EDIT_CONTACT_SUCCESS';
 
 /* Action Creators */
 export function callFetchContacts() {
@@ -31,15 +34,29 @@ export function deleteContactSuccess(contactId) {
   return { type: DELETE_CONTACT_SUCCESS, contactId };
 }
 
+export function callEditContact(contact) {
+  return { type: CALL_EDIT_CONTACT, contact };
+}
+
+export function editContactFailed(contactId, error) {
+  return { type: EDIT_CONTACT_FAILED, contactId, error };
+}
+
+export function editContactSuccess(contact) {
+  return { type: EDIT_CONTACT_SUCCESS, contact };
+}
+
 /* Initial State */
 const INITIAL_STATE = {
   data: [],
   error: {
     delete: [],
+    edit: [],
     fetch: null
   },
   loading: {
     delete: [],
+    edit: [],
     fetch: false
   }
 };
@@ -47,7 +64,7 @@ const INITIAL_STATE = {
 /* Reducer */
 export default function reducer(state = INITIAL_STATE, action) {
 
-  const { contactId, contacts, error, type } = action;
+  const { contactId, contact, contacts, error, type } = action;
 
   switch(type) {
     case CALL_FETCH_CONTACTS:
@@ -128,6 +145,51 @@ export default function reducer(state = INITIAL_STATE, action) {
           ...state.loading,
           delete: state.loading.delete
                     .filter(currentContactId => currentContactId !== contactId)
+        }
+      };
+    case CALL_EDIT_CONTACT:
+      return {
+        ...state,
+        error: {
+          ...state.error,
+          edit: state.error.edit
+                  .filter(contactError => contactError.contactId !== contact.id)
+        },
+        loading: {
+          ...state.loading,
+          edit: state.loading.edit
+                    .filter(currentContactId => currentContactId !== contact.id)
+        }
+      };
+    case EDIT_CONTACT_FAILED:
+      return {
+        ...state,
+        error: {
+          ...state.error,
+          edit: state.error.edit
+                  .concat([{ contactId, error }])
+        },
+        loading: {
+          ...state.loading,
+          edit: state.loading.edit
+                    .filter(currentContactId => currentContactId !== contactId)
+        }
+      };
+    case EDIT_CONTACT_SUCCESS:
+      return {
+        ...state,
+        data: state.data
+                .filter(currentContact => parseInt(currentContact.id) !== parseInt(contact.id))
+                .concat([contact]),
+        error: {
+          ...state.error,
+          edit: state.error.edit
+                  .filter(contactError => contactError.contactId !== contact.id)
+        },
+        loading: {
+          ...state.loading,
+          edit: state.loading.edit
+                    .filter(currentContactId => currentContactId !== contact.id)
         }
       };
     default:
