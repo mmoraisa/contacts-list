@@ -7,6 +7,8 @@ import ContactsList from './ContactsList';
 import SearchBox from './SearchBox';
 import './Main.css';
 
+const sortBy = require('sort-by');
+
 const Main = ({ contacts, createContact, fetchContacts }) => {
 
   const [query, setQuery] = useState(null);
@@ -56,7 +58,7 @@ const Main = ({ contacts, createContact, fetchContacts }) => {
           </Button>
         </div>
         <ContactsList
-          contacts={viewingContacts} />
+          contacts={viewingContacts.sort(sortBy('name', 'phone'))} />
       </div>
     </Fragment>
   );
