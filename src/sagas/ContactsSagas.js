@@ -1,5 +1,5 @@
 import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { CALL_FETCH_CONTACTS, fetchContactsSuccess, fetchContactsFailed, CALL_DELETE_CONTACT, deleteContactFailed, deleteContactSuccess, CALL_EDIT_CONTACT, editContactFailed, editContactSuccess } from '../ducks/Contacts';
+import { CALL_FETCH_CONTACTS, fetchContactsSuccess, fetchContactsFailed, CALL_DELETE_CONTACT, deleteContactFailed, deleteContactSuccess, CALL_EDIT_CONTACT, editContactFailed, editContactSuccess, CALL_CREATE_CONTACT, createContactFailed, createContactSuccess } from '../ducks/Contacts';
 import ContactsAPI from '../integrations/ContactsAPI';
 
 function* fetchContacts() {
@@ -46,10 +46,26 @@ function* editContactSagas() {
   yield takeEvery(CALL_EDIT_CONTACT, editContact);
 }
 
+function* createContact(action) {
+  const { contact } = action;
+  try {
+    const savedContact = yield call(ContactsAPI.createContact, contact);
+    yield put(createContactSuccess(savedContact));
+  }
+  catch(error) {
+    yield put(createContactFailed(error));
+  }
+}
+
+function* createContactSagas() {
+  yield takeLatest(CALL_CREATE_CONTACT, createContact);
+}
+
 export default function*() {
   yield all([
     fork(fetchContactsSagas),
     fork(deleteContactSagas),
     fork(editContactSagas),
+    fork(createContactSagas),
   ]);
 }

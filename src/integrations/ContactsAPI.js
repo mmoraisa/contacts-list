@@ -39,6 +39,24 @@ class ContactsAPI {
     })
   }
 
+  static createContact(contact) {
+    return new Promise((resolve, reject) => {
+      fetch(`${CONTACTS_API_ENDPOINT}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          ...contact,
+          avatar: `https://picsum.photos/200/200`
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => response.json())
+      .then(resolve)
+      .catch(reject);
+    })
+  }
+
 }
 
 export default ContactsAPI;

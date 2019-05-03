@@ -1,3 +1,11 @@
 .app {
   padding: 30px;
 }
+
+button {
+  margin: 0 10px;
+}
+
+.contacts-list .ant-spin-container {
+  justify-content: center;
+}

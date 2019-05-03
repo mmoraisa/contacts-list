@@ -5,7 +5,7 @@ import './ContactsListItem.css';
 
 const { Meta } = Card;
 
-const ContactsListItem = ({ avatar, deleteContact, editContact, id, loading, name, phone }) => (
+const ContactsListItem = ({ avatar, deleteContact, editContact, loading, name, phone }) => (
   <Card
     className="contact"
     style={{ marginTop: 16 }}
@@ -13,10 +13,10 @@ const ContactsListItem = ({ avatar, deleteContact, editContact, id, loading, nam
       <Spin onClick={deleteContact} size="small" spinning={loading.delete}>
         <Icon type="delete"/>
       </Spin>,
-      <Spin onClick={editContact} size="small" spinning={false}>
+      <Spin onClick={editContact} size="small" spinning={loading.edit}>
         <Icon type="edit" />
-      </Spin>,
-      <Icon type="ellipsis" />]}
+      </Spin>
+    ]}
   >
     <Meta
       avatar={<Avatar src={avatar} />}

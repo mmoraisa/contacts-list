@@ -34,6 +34,7 @@ const ContactsList = ({ contacts, deleteContact, editContact, loading }) => {
               deleteContact={() => deleteContact(contact.id)}
               editContact={() => setEditing(parseInt(contact.id))}
               loading={{
+                edit: loading.edit.includes(contact.id),
                 delete: loading.delete.includes(contact.id)
               }}
               key={contact.id}

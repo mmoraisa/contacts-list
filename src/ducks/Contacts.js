@@ -8,6 +8,9 @@ export const DELETE_CONTACT_SUCCESS = 'DELETE_CONTACT_SUCCESS';
 export const CALL_EDIT_CONTACT = 'CALL_EDIT_CONTACT';
 export const EDIT_CONTACT_FAILED = 'EDIT_CONTACT_FAILED';
 export const EDIT_CONTACT_SUCCESS = 'EDIT_CONTACT_SUCCESS';
+export const CALL_CREATE_CONTACT = 'CALL_CREATE_CONTACT';
+export const CREATE_CONTACT_FAILED = 'CREATE_CONTACT_FAILED';
+export const CREATE_CONTACT_SUCCESS = 'CREATE_CONTACT_SUCCESS';
 
 /* Action Creators */
 export function callFetchContacts() {
@@ -46,15 +49,29 @@ export function editContactSuccess(contact) {
   return { type: EDIT_CONTACT_SUCCESS, contact };
 }
 
+export function callCreateContact(contact) {
+  return { type: CALL_CREATE_CONTACT, contact };
+}
+
+export function createContactFailed(error) {
+  return { type: CREATE_CONTACT_FAILED, error };
+}
+
+export function createContactSuccess(contact) {
+  return { type: CREATE_CONTACT_SUCCESS, contact };
+}
+
 /* Initial State */
 const INITIAL_STATE = {
   data: [],
   error: {
+    create: null,
     delete: [],
     edit: [],
     fetch: null
   },
   loading: {
+    create: false,
     delete: [],
     edit: [],
     fetch: false
@@ -158,7 +175,7 @@ export default function reducer(state = INITIAL_STATE, action) {
         loading: {
           ...state.loading,
           edit: state.loading.edit
-                    .filter(currentContactId => currentContactId !== contact.id)
+                  .concat([contact.id.toString()])
         }
       };
     case EDIT_CONTACT_FAILED:
@@ -190,6 +207,43 @@ export default function reducer(state = INITIAL_STATE, action) {
           ...state.loading,
           edit: state.loading.edit
                     .filter(currentContactId => currentContactId !== contact.id)
+        }
+      };
+    case CALL_CREATE_CONTACT:
+      return {
+        ...state,
+        error: {
+          ...state.error,
+          create: null
+        },
+        loading: {
+          ...state.loading,
+          create: true
+        }
+      };
+    case CREATE_CONTACT_FAILED:
+      return {
+        ...state,
+        error: {
+          ...state.error,
+          create: error
+        },
+        loading: {
+          ...state.loading,
+          create: false
+        }
+      };
+    case CREATE_CONTACT_SUCCESS:
+      return {
+        ...state,
+        data: state.data.concat([contact]),
+        error: {
+          ...state.error,
+          create: null
+        },
+        loading: {
+          ...state.loading,
+          create: false
         }
       };
     default:
